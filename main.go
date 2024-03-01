@@ -13,21 +13,27 @@ func main() {
 	ws := readLines(fn)   // list of taboo words
 
 	for {
-		tw := readUserInput() // word to check if taboo
-		if tw == "exit" {
+		s := readUserInput() // sentence to censor
+		if s == "exit" {
 			fmt.Println("Bye!")
 			os.Exit(0)
 		} else {
 			var censored string
-			if isTabooWord(ws, tw) {
-				censored = censor(tw)
-			} else {
-				censored = tw
-			}
+			censored = censorSentence(ws, s)
 			fmt.Println(censored)
 		}
 	}
 
+}
+
+func censorSentence(ws []string, s string) string {
+	words := strings.Split(s, " ")
+	for i, w := range words {
+		if isTabooWord(ws, w) {
+			words[i] = censor(w)
+		}
+	}
+	return strings.Join(words, " ")
 }
 
 // censor replaces each character in a string with an asterisk.
@@ -35,6 +41,7 @@ func censor(tw string) string {
 	return strings.Repeat("*", len(tw))
 }
 
+// isTabooWord checks if a word is in a list of taboo words.
 func isTabooWord(ws []string, tw string) bool {
 	utw := strings.ToLower(tw)
 	for _, w := range ws {
@@ -46,6 +53,7 @@ func isTabooWord(ws []string, tw string) bool {
 	return false
 }
 
+// readUserInput reads a line of input from the user.
 func readUserInput() string {
 	var input string
 	_, err := fmt.Scanln(&input)
