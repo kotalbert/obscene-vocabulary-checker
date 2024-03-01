@@ -5,15 +5,32 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
-	fn := readUserInput()
-	ws := readLines(fn)
+	fn := readUserInput() // name of file to read
+	ws := readLines(fn)   // list of taboo words
+	tw := readUserInput() // word to check if taboo
 
-	for _, w := range ws {
-		fmt.Println(w)
+	if isTabooWord(ws, tw) {
+		fmt.Println("True")
+	} else {
+		fmt.Println("False")
+
 	}
+
+}
+
+func isTabooWord(ws []string, tw string) bool {
+	utw := strings.ToLower(tw)
+	for _, w := range ws {
+		uw := strings.ToLower(w)
+		if uw == utw {
+			return true
+		}
+	}
+	return false
 }
 
 func readUserInput() string {
