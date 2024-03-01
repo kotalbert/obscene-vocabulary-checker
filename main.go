@@ -8,12 +8,25 @@ import (
 )
 
 func main() {
-	fn := readUserInput()
-	ws := readLines(fn)
+	fn := readUserInput() // name of file to read
+	ws := readLines(fn)   // list of taboo words
+	tw := readUserInput() // word to check if taboo
 
-	for _, w := range ws {
-		fmt.Println(w)
+	ts := buildTabooSet(ws)
+	if _, ok := ts[tw]; ok {
+		fmt.Println("True")
+	} else {
+		fmt.Println("False")
 	}
+
+}
+
+func buildTabooSet(ws []string) map[string]struct{} {
+	set := make(map[string]struct{}, len(ws))
+	for _, w := range ws {
+		set[w] = struct{}{}
+	}
+	return set
 }
 
 func readUserInput() string {
