@@ -11,15 +11,28 @@ import (
 func main() {
 	fn := readUserInput() // name of file to read
 	ws := readLines(fn)   // list of taboo words
-	tw := readUserInput() // word to check if taboo
 
-	if isTabooWord(ws, tw) {
-		fmt.Println("True")
-	} else {
-		fmt.Println("False")
-
+	for {
+		tw := readUserInput() // word to check if taboo
+		if tw == "exit" {
+			fmt.Println("Bye!")
+			os.Exit(0)
+		} else {
+			var censored string
+			if isTabooWord(ws, tw) {
+				censored = censor(tw)
+			} else {
+				censored = tw
+			}
+			fmt.Println(censored)
+		}
 	}
 
+}
+
+// censor replaces each character in a string with an asterisk.
+func censor(tw string) string {
+	return strings.Repeat("*", len(tw))
 }
 
 func isTabooWord(ws []string, tw string) bool {
