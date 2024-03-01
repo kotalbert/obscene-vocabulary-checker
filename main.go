@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -12,21 +13,24 @@ func main() {
 	ws := readLines(fn)   // list of taboo words
 	tw := readUserInput() // word to check if taboo
 
-	ts := buildTabooSet(ws)
-	if _, ok := ts[tw]; ok {
+	if isTabooWord(ws, tw) {
 		fmt.Println("True")
 	} else {
 		fmt.Println("False")
+
 	}
 
 }
 
-func buildTabooSet(ws []string) map[string]struct{} {
-	set := make(map[string]struct{}, len(ws))
+func isTabooWord(ws []string, tw string) bool {
+	utw := strings.ToLower(tw)
 	for _, w := range ws {
-		set[w] = struct{}{}
+		uw := strings.ToLower(w)
+		if uw == utw {
+			return true
+		}
 	}
-	return set
+	return false
 }
 
 func readUserInput() string {
